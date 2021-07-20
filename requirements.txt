@@ -1,0 +1,8 @@
+discord==1.0.1
+discord.py==1.6.0
+DateTime==4.3
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.12.2
+asyncio==3.4.3
+requests==2.25.1
+cachetools==4.2.2
