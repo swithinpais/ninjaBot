@@ -130,3 +130,10 @@ dmypy.json
 
 # Config file
 config.json
+
+# Error Log File
+errorLog.txt
+
+# Databases
+afkDatabase.db
+tradeBanned.db
