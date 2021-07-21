@@ -34,7 +34,7 @@ client.remove_command("help")
 
 version = "1.0.11"
 
-with open("config.json", "r") as f:
+with open("devConfig.json", "r") as f:
 
     data = json.load(f)
 
@@ -347,7 +347,7 @@ class Fun(commands.Cog, name="Fun"):
     @commands.command(brief="Flips a coin", usage="{10}", aliases=["cf"], help="Flips a coin and give heads or tails")
     async def coinflip(self, ctx):
         choices = ["Heads", "Tails"]
-        message = f"It landed on {random.choice(choices)}"
+        message = f"It landed on {random.choice(choices)}."
         await ctx.channel.send(message, reference=ctx.message, allowed_mentions=discord.AllowedMentions(replied_user=False))
 
     @commands.cooldown(1, 5, type=commands.BucketType(4))
