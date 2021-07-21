@@ -1,5 +1,4 @@
 # VERSION 1.0.11
-
 """
 This is the source code for Ninja Bot.
 You are free to use it if you like.
@@ -1022,11 +1021,12 @@ class Skyblock(commands.Cog, name="Skyblock"):
                     except KeyError:
                         pass
                 index = 0
-                while True:
+                embeds = []
+                for i in range(len(auctions)):
                     embed = discord.Embed(title=f"Auctions", color=0x43eb34)
                     embed.description = f"[{name}](https://sky.shiiyu.moe/stats/{name})"
                     unClaimedTotal = 0
-                    for auction in auctions[reference[(list(reversed(reference)))[index]]]:
+                    for auction in auctions[reference[(list(reversed(reference)))[i]]]:
                         ended = ((auction["end"]/1000) <= time.time())
                         text = ""
                         if ended:
@@ -1049,14 +1049,17 @@ class Skyblock(commands.Cog, name="Skyblock"):
                         if re.match(r"\[Lvl \d*\]", embedName) is not None:
                             embedName += f" - {auction['tier'].capitalize()}"
                         embed.add_field(name=embedName, value=text, inline=False)
-                    if auctions[reference[(list(reversed(reference)))[index]]] == []:
-                        embed.add_field(name="⠀", value=f"No auctions found for {name} on {reference[(list(reversed(reference)))[index]]}")
+                    if auctions[reference[(list(reversed(reference)))[i]]] == []:
+                        embed.add_field(name="⠀", value=f"No auctions found for {name} on {reference[(list(reversed(reference)))[i]]}")
                     embed.set_thumbnail(url=f"https://mc-heads.net/head/{uuid}/.png")
-                    embed.set_footer(text=f"Profile: {reference[(list(reversed(reference)))[index]]} • Page {index+1}/{len(auctions)}")
+                    embed.set_footer(text=f"Profile: {reference[(list(reversed(reference)))[i]]} • Page {i+1}/{len(auctions)}")
                     if unClaimedTotal != 0:
                         embed.description = f"**[{name}](https://sky.shiiyu.moe/stats/{name}) has {human_format(unClaimedTotal)} coins that are unclaimed.**\n"
                     embed.timestamp = dt.datetime.now()
-                    await loadingMessage.edit(content="", embed=embed, allowed_mentions=discord.AllowedMentions(replied_user=False))
+                    embeds.append(embed)
+                while True:
+                    
+                    await loadingMessage.edit(content="", embed=embeds[index], allowed_mentions=discord.AllowedMentions(replied_user=False))
                     reactions = ["⏮️","◀️","▶️","⏭️"]
                     def check(reaction, u):
                         return (reaction.emoji in reactions) and u == ctx.message.author
@@ -1081,7 +1084,7 @@ class Skyblock(commands.Cog, name="Skyblock"):
                         index = len(auctions) - 1
                     if index < 0:
                         index = 0
-                    if index >= len(auctions):
+                    elif index >= len(auctions):
                         index = len(auctions) - 1
                     try:
                         await loadingMessage.remove_reaction(reaction, ctx.author)
