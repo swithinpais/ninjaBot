@@ -42,8 +42,6 @@ with open("devConfig.json", "r") as f:
     HYPIXEL_API_KEY = data["HYPIXEL_API_KEY"]
     allowedChannels = data["allowedChannels"]
     linkFilter = data["linkFilter"]
-    blacklist0 = data["blacklist0"]
-    blacklist1 = data["blacklist1"]
     names = data["names"]
     logging_channel = data["logging_channel"]
     ignoredCategories = data["ignoredCategories"]
@@ -61,6 +59,12 @@ with open("devConfig.json", "r") as f:
     sbBotCmdChannels = data["sbBotCmdChannels"]
     allowedWords = data["allowedWords"]
     hyRequestsMade = 0
+
+with open("reallyBadWords.txt", "r") as f:
+    blacklist0 = f.readlines()
+
+with open("maybeBadWords.txt", "r") as f:
+    blacklist1 = f.readlines()
 
 allCogs = set({})
 loadedCogs = []
