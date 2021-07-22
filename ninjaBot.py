@@ -34,7 +34,7 @@ client.remove_command("help")
 
 version = "1.0.11"
 
-with open("devConfig.json", "r") as f:
+with open("config.json", "r") as f:
 
     data = json.load(f)
 
