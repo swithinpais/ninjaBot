@@ -61,10 +61,10 @@ with open("config.json", "r") as f:
     hyRequestsMade = 0
 
 with open("reallyBadWords.txt", "r") as f:
-    blacklist0 = f.readlines()
+    blacklist0 = f.read().split("\n")
 
 with open("maybeBadWords.txt", "r") as f:
-    blacklist1 = f.readlines()
+    blacklist1 = f.read().split("\n")
 
 allCogs = set({})
 loadedCogs = []
@@ -124,7 +124,6 @@ async def dev(ctx):
     isOwner = await client.is_owner(ctx.author)
     if isOwner:
         await ctx.channel.send("aaron this command works now shut up")
-        await ctx.channel.send(ctx.message.content)
         return
     raise commands.CommandNotFound
 
@@ -1348,7 +1347,7 @@ async def filter(ctx, checkAll=False):  # sourcery no-metrics
 
         for swearWord in blacklist1: #starts the loop to check swears
             confidence = fuzz.token_set_ratio(word, swearWord)
-            if swearWord in word or ("http" in word):
+            if swearWord in word:
                 confidence = 100
             if confidence >= confidenceThreshold:
 
@@ -1452,7 +1451,7 @@ async def on_message(ctx):
             await message.delete(delay=5)
             interactor.delete_data(afkConn, "afk", "user_id", str(ctx.author.id))
 
-    task = asyncio.create_task(filter(ctx))
+    task = asyncio.create_task(filter(ctx, checkAll=True))
     spamTask = asyncio.create_task(spamFilter(ctx))
     sProcCommands = await spamTask
 
