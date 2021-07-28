@@ -2,7 +2,7 @@ import discord
 from discord.errors import Forbidden
 from discord.ext import commands, tasks
 import interactor
-import data
+from data import data
 from typing import Callable, List, Optional
 import datetime as dt
 from . import commandChecks

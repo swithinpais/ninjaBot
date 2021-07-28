@@ -2,10 +2,12 @@ import discord
 from discord.errors import Forbidden
 from discord.ext import commands, tasks
 import interactor
-import data
+from data import data
 from typing import Callable, List, Optional
 import datetime as dt
 from . import commandChecks
+from filters import Filters
+
 
 import random
 
@@ -14,6 +16,7 @@ class Fun(commands.Cog, name="Fun"):
         self.bot = bot
         self.allCogs = allCogs
         self.loadedCogs = loadedCogs
+        self.Filters = Filters(bot)
 
         allCogs.add(self.qualified_name)
         loadedCogs.append(self.qualified_name)
@@ -32,7 +35,7 @@ class Fun(commands.Cog, name="Fun"):
             await message.delete(delay=10)
             return
 
-        passed = await filter(ctx.message, checkAll=True)
+        passed = await self.Filters.filter(ctx.message, checkAll=True)
 
 
         if not passed:

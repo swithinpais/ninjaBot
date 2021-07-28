@@ -5,6 +5,7 @@ import random
 import datetime as dt
 from fuzzywuzzy import fuzz
 import cachetools
+import unicodedata
 
 class Filters():
     def __init__(self, bot) -> None:
@@ -23,7 +24,11 @@ class Filters():
         linkText = str(ctx.content).replace("https://","").replace("http://","").replace("www.","")
         links = linkText.split(" ")
         replaceWords = {".":"", ",":"", "!":"", "?":"", "¡":"i", "-":""}
-        text = str(ctx.content)
+        text = "".join(
+            c
+            for c in unicodedata.normalize("NFKD", str(ctx.content))
+            if not unicodedata.combining(c)
+        )
         for k in replaceWords:
             text = text.replace(k, replaceWords[k])
         words = text.split(" ")
@@ -61,7 +66,7 @@ class Filters():
                     embed.add_field(name="Link Detected", value=f"{link}")
                     embed.timestamp = dt.datetime.utcnow()
                     embed.set_footer(text=f"Message ID:{ctx.id} • User ID:{ctx.author.id}")
-                    channel = data.getLoggingChannel()
+                    channel = self.bot.get_channel(data.getLoggingChannel())
                     try:
                         await channel.send(embed=embed)
                     except Exception:
@@ -83,7 +88,7 @@ class Filters():
 
                 if swearWord in word:
                     confidence = 100
-                
+
 
                 if confidence >= data.getConfidenceThreshold():
                     try:
@@ -104,7 +109,7 @@ class Filters():
                     embed.add_field(name="Word Detected", value=f"{swearWord}")
                     embed.timestamp = dt.datetime.utcnow()
                     embed.set_footer(text=f"Message ID:{ctx.id} • User ID:{ctx.author.id}")
-                    channel = data.getLoggingChannel()
+                    channel = self.bot.get_channel(data.getLoggingChannel())
 
                     await channel.send(embed=embed, files=files)
 
@@ -141,7 +146,7 @@ class Filters():
                     embed.add_field(name="Word Detected", value=f"{swearWord}")
                     embed.timestamp = dt.datetime.utcnow()
                     embed.set_footer(text=f"Message ID:{ctx.id} • User ID:{ctx.author.id}")
-                    channel = data.getLoggingChannel()
+                    channel = self.bot.get_channel(data.getLoggingChannel())
                     await channel.send(embed=embed)
 
                     messageSent = await ctx.channel.send(f"<@{ctx.author.id}> You cannot say that! :rage:")
@@ -189,7 +194,7 @@ class Filters():
                     await member.edit(reason="Inapropriate Nick", nick=name)
                     embed.add_field(name="New Nickname", value=f"{member.display_name}")
                     embed.add_field(name="User", value=f"<@{member.id}>")
-                    channel = data.getLoggingChannel()
+                    channel = self.bot.get_channel(data.getLoggingChannel())
                     await channel.send(embed=embed)
                     return
 
@@ -203,6 +208,6 @@ class Filters():
                     embed.add_field(name="Old Nickname", value=f"{member.name}")
                     embed.add_field(name="New Nickname", value=f"{member.display_name}")
                     embed.add_field(name="User", value=f"<@{member.id}>")
-                    channel = data.getLoggingChannel()
+                    channel = self.bot.get_channel(data.getLoggingChannel())
                     await channel.send(embed=embed)
                     return

@@ -51,7 +51,16 @@ async def close(ctx):
         return
     raise commands.CommandNotFound
 
+@client.event
+async def on_message(*args, **kwargs):
+    pass
 
+# Events
+client.add_cog(errorEvents.BotErrorEvents(client))
+client.add_cog(memberEvents.BotMemberEvents(client))
+client.add_cog(messageEvents.BotMessagesEvents(client))
+client.add_cog(startup.Startup(client))
+client.add_cog(voiceEvents.BotVoiceEvents(client))
 
 # Commands
 client.add_cog(moderation.Moderation(client, loadedCogs, allCogs))
@@ -60,12 +69,7 @@ client.add_cog(image.Image(client, loadedCogs, allCogs))
 client.add_cog(miscellaneous.Miscellaneous(client, loadedCogs, allCogs))
 client.add_cog(skyblock.Skyblock(client, loadedCogs, allCogs))
 
-# Events
-client.add_cog(errorEvents.BotErrorEvents(client))
-client.add_cog(memberEvents.BotMemberEvents(client))
-client.add_cog(messageEvents.BotMessagesEvents(client))
-client.add_cog(startup.Startup(client))
-client.add_cog(voiceEvents.BotVoiceEvents(client))
+
 
 Tasks = botTasks.BotTasks()
 Tasks.start_all_tasks()
