@@ -12,9 +12,11 @@ class BotVoiceEvents(commands.Cog):
         if aft.channel is None:
             guild = member.guild
             role = guild.get_role(data.getSilentVcRole())
-            await member.remove_roles(role, reason="Left VC")
+            if role is not None:
+                await member.remove_roles(role, reason="Left VC")
 
         elif bef.channel is None:
             guild = member.guild
             role = guild.get_role(data.getSilentVcRole())
-            await member.add_roles(role, reason="Joined VC")
+            if role is not None:
+                await member.add_roles(role, reason="Joined VC")

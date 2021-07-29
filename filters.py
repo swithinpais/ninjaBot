@@ -67,10 +67,8 @@ class Filters():
                     embed.timestamp = dt.datetime.utcnow()
                     embed.set_footer(text=f"Message ID:{ctx.id} • User ID:{ctx.author.id}")
                     channel = self.bot.get_channel(data.getLoggingChannel())
-                    try:
+                    if channel is not None:
                         await channel.send(embed=embed)
-                    except Exception:
-                        pass
 
 
                     messageSent = await ctx.channel.send(f"<@{ctx.author.id}> You cannot send that link! :rage:")
@@ -110,8 +108,8 @@ class Filters():
                     embed.timestamp = dt.datetime.utcnow()
                     embed.set_footer(text=f"Message ID:{ctx.id} • User ID:{ctx.author.id}")
                     channel = self.bot.get_channel(data.getLoggingChannel())
-
-                    await channel.send(embed=embed, files=files)
+                    if channel is not None:
+                        await channel.send(embed=embed, files=files)
 
                     messageSent = await ctx.channel.send(f"<@{ctx.author.id}> You cannot say that! :rage:")
                     await messageSent.delete(delay=5)
@@ -147,7 +145,8 @@ class Filters():
                     embed.timestamp = dt.datetime.utcnow()
                     embed.set_footer(text=f"Message ID:{ctx.id} • User ID:{ctx.author.id}")
                     channel = self.bot.get_channel(data.getLoggingChannel())
-                    await channel.send(embed=embed)
+                    if channel is not None:
+                        await channel.send(embed=embed)
 
                     messageSent = await ctx.channel.send(f"<@{ctx.author.id}> You cannot say that! :rage:")
                     await messageSent.delete(delay=5)
@@ -195,7 +194,8 @@ class Filters():
                     embed.add_field(name="New Nickname", value=f"{member.display_name}")
                     embed.add_field(name="User", value=f"<@{member.id}>")
                     channel = self.bot.get_channel(data.getLoggingChannel())
-                    await channel.send(embed=embed)
+                    if channel is not None:
+                        await channel.send(embed=embed)
                     return
 
             for word in data.getBlacklist1():
@@ -209,5 +209,6 @@ class Filters():
                     embed.add_field(name="New Nickname", value=f"{member.display_name}")
                     embed.add_field(name="User", value=f"<@{member.id}>")
                     channel = self.bot.get_channel(data.getLoggingChannel())
-                    await channel.send(embed=embed)
+                    if channel is not None:
+                        await channel.send(embed=embed)
                     return

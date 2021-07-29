@@ -19,7 +19,8 @@ class BotMemberEvents(commands.Cog):
         rows = interactor.read_data(data.tradeBanConn, "*", "tradeBanned")
         if member.id in rows:
             role = member.guild.get_role(data.getTradeBanRole())
-            await member.add_roles(role, reason="Trade Banned")
+            if role is not None:
+                await member.add_roles(role, reason="Trade Banned")
     
     @commands.Cog.listener()
     async def on_member_update(self, before, after):

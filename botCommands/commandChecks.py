@@ -10,3 +10,16 @@ def isSbBotCmdChannel():
     async def predicate(ctx):
         return ctx.channel.id in data.getSbBotCmdChannels()
     return commands.check(predicate)
+
+def isModerator():
+    async def predicate(ctx):
+        for role in ctx.author.roles:
+            if role.id == data.getModRole():
+                return True
+        return ctx.author.guild_permissions.administrator
+    return commands.check(predicate)
+
+def isAdministrator():
+    async def predicate(ctx):
+        return ctx.author.guild_permissions.administrator
+    return commands.check(predicate)

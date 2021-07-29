@@ -147,6 +147,9 @@ class Miscellaneous(commands.Cog, name="Miscellaneous"):
         embed.timestamp = dt.datetime.utcnow()
         embed.set_footer(text=f"User ID: {ctx.author.id}")
         channel = self.bot.get_channel(data.getNickChannel())
+        if channel is None:
+            await ctx.channel.send("This server has not set up nicks yet.", reference=ctx.message, allowed_mentions=discord.AllowedMentions(replied_user=False))
+            return
         nickMessage = await channel.send(embed=embed)
 
         await nickMessage.add_reaction("✅")
@@ -243,6 +246,8 @@ class Miscellaneous(commands.Cog, name="Miscellaneous"):
         await successMsg.delete(delay=10)
 
         channel = self.bot.get_channel(data.getReportChannel())
+        if channel is None:
+            await ctx.channel.send("This server has not set up reports yet.", reference=ctx.message, allowed_mentions=discord.AllowedMentions(replied_user=False))
         embed = discord.Embed(title="User Report", color=0x34a4eb)
         embed.add_field(name="Reporter", value=f"<@{ctx.author.id}>", inline=True)
         embed.add_field(name="Reporter Nick", value=f"{ctx.author.display_name}")

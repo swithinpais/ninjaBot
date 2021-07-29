@@ -94,8 +94,9 @@ class BotMessagesEvents(commands.Cog):
         embed.set_footer(text=f"Message ID:{before.id} • User ID:{before.author.id}")
         embed.timestamp = dt.datetime.utcnow()
 
-        channel = data.getLoggingChannel()
-        await channel.send(embed=embed, files=files)
+        channel = self.bot.get_channel(data.getLoggingChannel())
+        if channel is not None:
+            await channel.send(embed=embed, files=files)
 
         if os.path.exists(f"{before.author.name}BeforeMessage.txt"):
             os.remove(f"{before.author.name}BeforeMessage.txt")
@@ -126,8 +127,9 @@ class BotMessagesEvents(commands.Cog):
             embed.add_field(name=f":wastebasket:", value=f"Message sent in <#{payload.channel_id}> deleted.")
             embed.timestamp = dt.datetime.utcnow()
             embed.set_footer(text=f"Message ID:{payload.message_id}")
-            channel = data.getLoggingChannel()
-            await channel.send(embed=embed)
+            channel = self.bot.get_channel(data.getLoggingChannel())
+            if channel is not None:
+                await channel.send(embed=embed)
             return
 
         message = payload.cached_message
@@ -145,13 +147,14 @@ class BotMessagesEvents(commands.Cog):
                 embed.add_field(name="Message Attachments", value="Attached as file")
             embed.timestamp = dt.datetime.utcnow()
             embed.set_footer(text=f"Message ID:{message.id} • User ID:{message.author.id}")
-            channel = data.getLoggingChannel()
+            channel = self.bot.get_channel(data.getLoggingChannel())
             files.append(discord.File(f"message{message.author}.txt", filename="message.txt"))
-            if len(files) > 10:
-                await channel.send(embed=embed, files=files[0:10])
-                await channel.send(files=files[10:])
-            else:
-                await channel.send(embed=embed, files=files)
+            if channel is not None:
+                if len(files) > 10:
+                    await channel.send(embed=embed, files=files[0:10])
+                    await channel.send(files=files[10:])
+                else:
+                    await channel.send(embed=embed, files=files)
             os.remove(f"message{message.author}.txt")
             return
         else:
@@ -163,12 +166,13 @@ class BotMessagesEvents(commands.Cog):
                 embed.add_field(name="Message Attachments", value="Attached as file")
             embed.timestamp = dt.datetime.utcnow()
             embed.set_footer(text=f"Message ID:{message.id} • User ID:{message.author.id}")
-            channel = data.getLoggingChannel()
-            if len(files) > 10:
-                await channel.send(embed=embed, files=files[0:10])
-                await channel.send(files=files[10:])
-            else:
-                await channel.send(embed=embed, files=files)
+            channel = self.bot.get_channel(data.getLoggingChannel())
+            if channel is not None:
+                if len(files) > 10:
+                    await channel.send(embed=embed, files=files[0:10])
+                    await channel.send(files=files[10:])
+                else:
+                    await channel.send(embed=embed, files=files)
 
     @commands.Cog.listener()
     async def on_raw_bulk_message_delete(self, payload:discord.RawBulkMessageDeleteEvent): # sourcery no-metrics
@@ -183,8 +187,9 @@ class BotMessagesEvents(commands.Cog):
             embed.add_field(name=f":wastebasket:", value=f"Messages sent in <#{payload.channel_id}> deleted.")
             embed.timestamp = dt.datetime.utcnow()
             embed.set_footer(text=f"Message ID:{payload.message_id}")
-            channel = data.getLoggingChannel()
-            await channel.send(embed=embed)
+            channel = self.bot.get_channel(data.getLoggingChannel())
+            if channel is not None:
+                await channel.send(embed=embed)
             return
 
         for message in payload.cached_messages:
@@ -202,13 +207,14 @@ class BotMessagesEvents(commands.Cog):
                     embed.add_field(name="Message Attachments", value="Attached as file")
                 embed.timestamp = dt.datetime.utcnow()
                 embed.set_footer(text=f"Message ID:{message.id} • User ID:{message.author.id}")
-                channel = data.getLoggingChannel()
+                channel = self.bot.get_channel(data.getLoggingChannel())
                 files.append(discord.File(f"message{message.author}.txt", filename="message.txt"))
-                if len(files) > 10:
-                    await channel.send(embed=embed, files=files[0:10])
-                    await channel.send(files=files[10:])
-                else:
-                    await channel.send(embed=embed, files=files)
+                if channel is not None:
+                    if len(files) > 10:
+                        await channel.send(embed=embed, files=files[0:10])
+                        await channel.send(files=files[10:])
+                    else:
+                        await channel.send(embed=embed, files=files)
                 os.remove(f"message{message.author}.txt")
                 return
             else:
@@ -220,11 +226,12 @@ class BotMessagesEvents(commands.Cog):
                     embed.add_field(name="Message Attachments", value="Attached as file")
                 embed.timestamp = dt.datetime.utcnow()
                 embed.set_footer(text=f"Message ID:{message.id} • User ID:{message.author.id}")
-                channel = data.getLoggingChannel()
-                if len(files) > 10:
-                    await channel.send(embed=embed, files=files[0:10])
-                    await channel.send(files=files[10:])
-                else:
-                    await channel.send(embed=embed, files=files)
+                channel = self.bot.get_channel(data.getLoggingChannel())
+                if channel is not None:
+                    if len(files) > 10:
+                        await channel.send(embed=embed, files=files[0:10])
+                        await channel.send(files=files[10:])
+                    else:
+                        await channel.send(embed=embed, files=files)
 
 

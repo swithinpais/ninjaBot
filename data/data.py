@@ -53,7 +53,7 @@ def getLinkFilter() -> List[str]:
 def getNames() -> List[str]:
     return names
 
-def getLoggingChannel() -> int:
+def getLoggingChannel() -> Optional[int]:
     return loggingChannel
 
 def getIgnoredCategories() -> List[int]:
@@ -97,6 +97,7 @@ def getBlacklist0() -> List[str]:
 
 def getBlacklist1() -> List[str]:
     return blacklist1
+    
 def getHyRequestsMade() -> int:
     return hyRequestsMade
 

@@ -46,6 +46,8 @@ class Skyblock(commands.Cog, name="Skyblock"):
     @commands.command(brief="Verifies you", usage="[IGN]", help="Verifies you on the server and gives you the Verified role")
     async def verify(self, ctx, ign=None):
         role = ctx.guild.get_role(botData.getVerifiedRole())
+        if role is None:
+            await ctx.channel.send("This server has not set up verification yet.", reference=ctx.message, allowed_mentions=discord.AllowedMentions(replied_user=False))
         if ign is None:
             await ctx.channel.send("You need to provide an ign", reference=ctx.message, allowed_mentions=discord.AllowedMentions(replied_user=False))
             return
@@ -358,7 +360,11 @@ class Skyblock(commands.Cog, name="Skyblock"):
                 for profile in pdata["profiles"]:
                     profiles[profile["profile_id"]] = profile["cute_name"]
                     auctions[profile["cute_name"]] = []
-                    reference[profile["members"][uuid]["last_save"]] = profile["cute_name"]
+                    
+                    try:
+                        reference[profile["members"][uuid]["last_save"]] = profile["cute_name"]
+                    except KeyError:
+                        reference[round(time.time())] = profile["cute_name"]
                 
                     
                 

@@ -1,6 +1,7 @@
 import discord
 from discord.errors import Forbidden
 from discord.ext import commands, tasks
+from discord.mentions import AllowedMentions
 import interactor
 from data import data
 from typing import Callable, List, Optional
@@ -21,7 +22,7 @@ class Moderation(commands.Cog, name="Moderation"):
         return super().cog_unload()
 
 
-    @commands.has_role(data.getModRole())
+    @commandChecks.isModerator()
     @commands.guild_only()
     @commands.command(brief="Bans a member from verifying", usage="[member]", help="Prevents a member from verifying")
     async def tradeban(self, ctx, member:discord.Member=None):
@@ -29,6 +30,8 @@ class Moderation(commands.Cog, name="Moderation"):
             await ctx.channel.send("You need to choose a member", delete_after=5)
         await ctx.message.delete()
         role = ctx.message.guild.get_role(data.getTradeBanRole())
+        if role is None:
+            await ctx.channel.send("This server has not set up a trade ban role yet.", reference=ctx.message, allowed_mentions=discord.AllowedMentions(replied_user=False))
 
         rows = interactor.read_data(data.tradeBanConn, "*", "tradeBanned")
         if member.id in rows:
@@ -68,7 +71,7 @@ class Moderation(commands.Cog, name="Moderation"):
 
         await ctx.channel.send(f"Deleted {len(messages)} messages")
 
-    #@commands.has_role(modRole)
+    #@commandChecks.isModerator()
     #@commands.command(brief="Deletes a")
     async def clear(self, ctx, member=None, limit=None): # work in progress
         
@@ -94,7 +97,7 @@ class Moderation(commands.Cog, name="Moderation"):
             
         
 
-    @commands.has_role(data.getModRole())
+    @commandChecks.isModerator()
     @commands.command(brief="Clears a user's message from all channels the bot can see", help="Effective to running clear command in every channel with the given amount.", usage="[member] (amount)")
     async def massclear(self, ctx, member:discord.User=None, limit=1):
         channels:List = ctx.guild.channels
@@ -123,7 +126,7 @@ class Moderation(commands.Cog, name="Moderation"):
         await loadingMsg.edit(content=f"Deleted {delMessages} message(s) across {totalChannels} channels", delete_after=15)
     
 
-    @commands.has_role(data.getModRole())
+    @commandChecks.isModerator()
     @commands.guild_only()
     @commands.command(brief="Locks a channel", usage="", help="Locks a channel and prevents members from sending messages in the channel.", enabled=False)
     async def lockchannel(self, ctx):
