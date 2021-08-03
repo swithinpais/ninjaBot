@@ -31,7 +31,7 @@ class BotMessagesEvents(commands.Cog):
                 await message.delete(delay=5)
                 interactor.delete_data(data.afkConn, "afk", "user_id", str(ctx.author.id))
 
-        task = asyncio.create_task(self.Filters.filter(ctx))
+        task = asyncio.create_task(self.Filters.swearFilter(ctx))
         spamTask = asyncio.create_task(self.Filters.spamFilter(ctx))
         sProcCommands = await spamTask
 
@@ -103,7 +103,7 @@ class BotMessagesEvents(commands.Cog):
         if os.path.exists(f"{after.author.name}BeforeMessage.txt"):
             os.remove(f"{after.author.name}BeforeMessage.txt")
 
-        asyncio.create_task(self.Filters.filter(after))
+        asyncio.create_task(self.Filters.swearFilter(after))
 
     @commands.Cog.listener()
     async def on_raw_message_delete(self, payload):  # sourcery no-metrics

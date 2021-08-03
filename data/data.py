@@ -25,6 +25,7 @@ with open("config.json", "r") as f:
     silentVcRole = data["silentVcRole"]
     verifiedRole = data["verifiedRole"]
     modRole = data["modRole"]
+    owner = data["owner"]
     confidenceThreshold = data["confidenceThreshold"]
     botCmdChannels = data["botCmdChannels"]
     sbBotCmdChannels = data["sbBotCmdChannels"]
@@ -80,6 +81,9 @@ def getVerifiedRole() -> Optional[int]:
 def getModRole() -> Optional[int]:
     return modRole
 
+def getOwner() -> Optional[int]:
+    return owner
+
 def getConfidenceThreshold() -> int:
     return confidenceThreshold
 
@@ -97,8 +101,9 @@ def getBlacklist0() -> List[str]:
 
 def getBlacklist1() -> List[str]:
     return blacklist1
-    
+
 def getHyRequestsMade() -> int:
+    global hyRequestsMade
     return hyRequestsMade
 
 def addHyRequestsMade() -> int:
@@ -107,6 +112,7 @@ def addHyRequestsMade() -> int:
     return hyRequestsMade
 
 def setHyRequestsMade(n) -> None:
+    global hyRequestsMade
     hyRequestsMade = n
 
 def setStartTime(time:dt.datetime) -> None:

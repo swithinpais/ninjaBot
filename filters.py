@@ -13,7 +13,7 @@ class Filters():
         self.spamCache = cachetools.TTLCache(1000, 3)
         self.warnedUsers = cachetools.TTLCache(1000, 10)
     
-    async def filter(self, ctx, checkAll=False):  # sourcery no-metrics
+    async def swearFilter(self, ctx, checkAll=False):  # sourcery no-metrics
         files = []
         if ctx.author.id == self.bot.user.id:
             return False

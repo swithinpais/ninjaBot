@@ -53,50 +53,21 @@ class Moderation(commands.Cog, name="Moderation"):
         interactor.add_data(data.tradeBanConn, "tradeBanned", user_id=member.id)
         await ctx.channel.send(f"Member ``{member}`` has been trade banned.", delete_after=5)
 
-
-    
-    async def purgeFunc(self, channel:discord.TextChannel, limit, check:Callable) -> List[discord.Message]:
-        messages = await channel.purge(limit=limit, check=check, bulk=True)
-        return messages
-
-    async def clearFunc(self, ctx, limit, check):
-        messages = await self.purgeFunc(ctx.channel, limit=limit, check=check)
-        
-        channel = self.bot.get_channel(data.getLoggingChannel())
-        embed = discord.Embed(title=f"{len(messages)} deleted")
-        embed.add_field(name=f" ", value=f"{len(messages)} purged in {ctx.channel}")
-        embed.set_author(name=f"{ctx.author}", url=ctx.author.avatar_url)
-        embed.timestamp = dt.datetime.now()
-        await channel.send(embed=embed)
-
-        await ctx.channel.send(f"Deleted {len(messages)} messages")
-
-    #@commandChecks.isModerator()
-    #@commands.command(brief="Deletes a")
-    async def clear(self, ctx, member=None, limit=None): # work in progress
-        
+    @commandChecks.isModerator()
+    @commands.command(brief="Deletes a specified amount of messages", usage="[amount] (user)")
+    async def clear(self, ctx, amount=1, member:discord.User=None):
         await ctx.message.delete()
-
-        if limit is None and member is None:
-            await ctx.channel.send("You must provide arguments")
-            return
-
-        if limit is None:
-            limit = 2000
-            member = member.replace("<@","").replace("!","").replace(">","")
-            try:
-                member = int(member)
-            except ValueError:
-                await ctx.channel.send("Invalid mention or id passed")
-                return
-            
-            member = ctx.guild.get_member(member)
+        def check(message):
+            message.author == member
+        if member is None:
             def check(message):
-                return message.author == member
-            task = await self.clearFunc(ctx, limit, check)
-            
+                return True
         
+        messages = await ctx.channel.purge(limit=amount, check=check)
+        await ctx.channel.send(f"Deleted {len(messages)} messages", delete_after=5.0)
 
+
+            
     @commandChecks.isModerator()
     @commands.command(brief="Clears a user's message from all channels the bot can see", help="Effective to running clear command in every channel with the given amount.", usage="[member] (amount)")
     async def massclear(self, ctx, member:discord.User=None, limit=1):

@@ -35,7 +35,7 @@ class Fun(commands.Cog, name="Fun"):
             await message.delete(delay=10)
             return
 
-        passed = await self.Filters.filter(ctx.message, checkAll=True)
+        passed = await self.Filters.swearFilter(ctx.message, checkAll=True)
 
 
         if not passed:

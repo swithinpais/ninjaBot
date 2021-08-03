@@ -19,7 +19,7 @@ from botTasks import botTasks
 
 intents = discord.Intents(guilds = True, members = True, bans = True, emojis = True, integrations = True, webhooks = True, invites = True, voice_states = True, presences = True, guild_messages = True, dm_messages = False, guild_reactions = True, dm_reactions = False, guild_typing = False, dm_typing = False)
 
-client = commands.Bot(command_prefix = "?", owner_id=300669365563424770, intents=intents, max_messages=5000, case_insensitive=True)
+client = commands.Bot(command_prefix = "?", owner_id=data.owner, intents=intents, max_messages=5000, case_insensitive=True)
 client.remove_command("help")
 
 allCogs = set({})
