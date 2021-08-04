@@ -7,7 +7,7 @@ import time
 startTime = dt.datetime.now()
 
 version = "1.0.11"
-with open("config.json", "r") as f:
+with open("devConfig.json", "r") as f:
 
     data = json.load(f)
 
@@ -17,7 +17,8 @@ with open("config.json", "r") as f:
     linkFilter = data["linkFilter"]
     names = data["names"]
     loggingChannel = data["logging_channel"]
-    ignoredCategories = data["ignoredCategories"]
+    swearIgnoredCategories = data["swearIgnoredCategories"]
+    spamIgnoredCategories = data["spamIgnoredCategories"]
     nickChannel = data["nickChannel"]
     reportChannel = data["reportChannel"]
     mutedRole = data["mutedRole"]
@@ -57,8 +58,11 @@ def getNames() -> List[str]:
 def getLoggingChannel() -> Optional[int]:
     return loggingChannel
 
-def getIgnoredCategories() -> List[int]:
-    return ignoredCategories
+def getSwearIgnoredCategories() -> List[int]:
+    return swearIgnoredCategories
+
+def getSpamIgnoredCategories() -> List[int]:
+    return spamIgnoredCategories
 
 def getNickChannel() -> Optional[int]:
     return nickChannel

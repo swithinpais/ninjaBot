@@ -19,7 +19,8 @@ class Filters():
             return False
         if ctx.channel.id == data.getLoggingChannel():
             return False
-
+        if ctx.channel.category_id in data.getSwearIgnoredCategories():
+            return False
 
         linkText = str(ctx.content).replace("https://","").replace("http://","").replace("www.","")
         links = linkText.split(" ")
@@ -159,7 +160,7 @@ class Filters():
 
         if message.author.id == self.bot.user.id:
             return True
-        if message.channel.category_id in data.getIgnoredCategories():
+        if message.channel.category_id in data.getSpamIgnoredCategories():
             return True
         try:
             self.spamCache[(str(message.author), str(message.content))] = self.spamCache[(str(message.author), str(message.content))] + 1
