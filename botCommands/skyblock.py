@@ -120,7 +120,7 @@ class Skyblock(commands.Cog, name="Skyblock"):
             return False, False
         if profile is None:
             async with aiohttp.ClientSession() as session:
-                async with session.get(f"http://127.0.0.1:9281/v1/profiles/{uuid}/weight?key={botData.HYPIXEL_API_KEY}") as r:
+                async with session.get(f"http://{botData.apiUrl}:9281/v1/profiles/{uuid}/weight?key={botData.HYPIXEL_API_KEY}") as r:
                     try:
                         data = (await r.json())["data"]
                     except KeyError:
@@ -128,7 +128,7 @@ class Skyblock(commands.Cog, name="Skyblock"):
                     code = r.status
         else:
             async with aiohttp.ClientSession() as session:
-                async with session.get(f"http://127.0.0.1:9281/v1/profiles/{uuid}/{profile}?key={botData.HYPIXEL_API_KEY}") as r:
+                async with session.get(f"http://{botData.apiUrl}:9281/v1/profiles/{uuid}/{profile}?key={botData.HYPIXEL_API_KEY}") as r:
                     try:
                         data = (await r.json())["data"]
                     except KeyError:

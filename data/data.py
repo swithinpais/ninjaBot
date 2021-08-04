@@ -31,6 +31,7 @@ with open("config.json", "r") as f:
     botCmdChannels = data["botCmdChannels"]
     sbBotCmdChannels = data["sbBotCmdChannels"]
     allowedWords = data["allowedWords"]
+    apiUrl = data["apiUrl"]
     hyRequestsMade = 0
 
 with open("reallyBadWords.txt", "r") as f:
