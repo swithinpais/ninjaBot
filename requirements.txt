@@ -6,4 +6,4 @@ python-Levenshtein==0.12.2
 asyncio==3.4.3
 requests==2.25.1
 cachetools==4.2.2
-async-cache=1.1.1
+async-cache==1.1.1
